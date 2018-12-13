@@ -26,6 +26,7 @@ const mongoose = require('mongoose')
 const db = require('./configs/keys').mongoURI;
 
 //full stack heroku deployment setting
+const path = require('path');
 
 mongoose
   .connect(db)
