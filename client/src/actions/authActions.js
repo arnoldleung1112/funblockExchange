@@ -5,7 +5,7 @@ import setAuthToken from '../utils/setAuthToken';
 
 export const loginUser = (userData) => dispatch => {
     console.log(userData);
-    axios.post('http://localhost:5000/api/users/login', userData)
+    axios.post('/api/users/login', userData)
     .then(res=>{
         console.log(res);
          // Save to localStorage
