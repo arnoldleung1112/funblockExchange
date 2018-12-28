@@ -78,7 +78,7 @@ onChange = (e) => {
             <div className="row">  
                                        
                     <div className="col-md-12 mb-4">
-                        <p>GC Account Balance: 10500</p>
+                        <p>GC Account Balance: {this.props.profile.profile && this.props.profile.profile.balance}</p>
                     </div>
                     
             </div>

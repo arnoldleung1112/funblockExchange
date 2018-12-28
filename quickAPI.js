@@ -4,6 +4,7 @@ const queryString = require("query-string");
 
 
 module.exports =  (username, password)=>{
+    // todo: secure key
     return new Promise((resolve, reject)=>{
         data = {
             openId:'OS2XSc',

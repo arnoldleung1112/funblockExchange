@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const Transaction = require('../../models/Transaction')
+const gameCoinAPI = require('../../gameCoinAPI')
 
 //test route
 router.get('/',(req,res)=>{
@@ -85,7 +86,17 @@ router.patch('/:trans_Id',passport.authenticate('jwt',{session:false}),
         req.body,
         {new:true})
     .then(tran => {
-        res.status(200).json(tran)
+        const gameCoinData = {
+            amount:tran.amountRequested,
+            type:"consume",
+            uid:tran.user_uid
+        }
+        gameCoinAPI(gameCoinData)
+        .then((gameCoinRes)=>{
+            res.status(200).json(tran)
+        })
+
+        
     })
 })
 

@@ -2,12 +2,29 @@ const express = require('express');
 const passport = require('passport')
 const router = express.Router();
 const Profile = require('../../models/Profile')
+const gameCoinAPI = require('../../gameCoinAPI')
 
+//get current profile
 router.get('/',passport.authenticate('jwt',{session: false}),(req,res)=>{
     Profile.findOne({uid: req.user.uid})
-    .then(profile => res.status(200).json(profile));
+    .then(profile => {
+        const gameCoinData = {
+            type:"query",
+            uid:profile.uid,
+        }
+        gameCoinAPI(gameCoinData)
+        .then((gameCoinRes)=>{
+            
+            const ProfileWithBalance = profile.toJSON();
+            ProfileWithBalance.balance = gameCoinRes.amount;
+            console.log(ProfileWithBalance)
+            res.status(200).json(ProfileWithBalance);
+        })
+    })
 })
 
+
+//create or update profile
 router.post('/',passport.authenticate('jwt',{session: false}),(req,res)=>{
     const profileFields = {
         uid: req.user.uid,
@@ -23,6 +40,7 @@ router.post('/',passport.authenticate('jwt',{session: false}),(req,res)=>{
                 {$set: profileFields},
                 {new: true}
             ).then(
+
                 profile => res.status(200).json(profile)
             )
         }else{
