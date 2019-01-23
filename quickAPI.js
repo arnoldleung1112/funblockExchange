@@ -23,17 +23,3 @@ module.exports =  (username, password)=>{
     
 }
 
-// var data = {
-//     openId:'OS2XSc',
-//     password:md5('Kickinthedoor'),
-//     productCode:'26940912809842029358369903149122',
-//     username:'dev@funblock.io',
-//     }
-    
-    // data.sign=md5(queryString.stringify(data,{encode: false}) + '&WyDCFLtaIE6t1czIOuTITu3kHScKP5WM');
-
-    // console.log(queryString.stringify(data))
-    // axios.post('http://13.229.41.11/open/userLogin',
-    // queryString.stringify(data))
-    // .then(res => console.log(res.data))
-    // .catch(err => console.log(err));

@@ -12,3 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+td{
+  width:10%;
+}
+
+table {
+  table-layout:fixed;
+  word-wrap: break-word;
+}

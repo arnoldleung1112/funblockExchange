@@ -4,7 +4,9 @@ import {connect} from 'react-redux'
 import {Link,withRouter} from 'react-router-dom'
 import {getTransaction, updateTrans} from '../../actions/transActions'
 import TextFieldGroup from '../common/TextFieldGroup'
-import SelectListGroup from '../common/SelectListGroup'
+
+
+
 import axios from 'axios'
 class UpdateTrans extends Component {
 
@@ -15,32 +17,40 @@ constructor(){
   amountTransferred:null,
   execTime:null,
   transferred:null,
-  transcationId:null,
+  dst_address:null,
   errors:{}
   }
 
 }
   onSubmit = (e)=>{
     e.preventDefault();
-    const data = {
-      status:this.state.status,
-      amountTransferred:this.state.amountTransferred,
-      execTime:Date.now(),
-      transcationId:this.state.transcationId
+    if (isNaN(this.state.amountTransferred)){
+      this.setState(
+        {errors: {amountTransferred: 'amount transferring is invalid'}}
+      )
+    }else{
+      const data = {
+        status:"Completed",
+        amountTransferred:this.state.amountTransferred,
+        execTime:Date.now(),
+        dst_address: this.state.dst_address
+      }
+      axios.patch(`/api/transactions/${this.props.match.params.trans_Id}`,data)
+      .then( res => this.props.history.push('/admin'))
     }
-    axios.patch(`/api/transactions/${this.props.match.params.trans_Id}`,data)
-    .then( res => this.props.history.push('/admin'))
+    
   }
 
 componentDidMount() {
         this.props.getTransaction(this.props.match.params.trans_Id);
         const transaction = this.props.transaction.transaction ? this.props.transaction.transaction : {}
         this.setState({
-          status:transaction.status,
+          status:"Completed",
           amountTransferred:transaction.amountTransferred,
           execTime:transaction.execTime,
           transferred:transaction.transferred,
-          transcationId:transaction.transcationId
+          transcationId:transaction.transcationId,
+          dst_address: transaction.dst_address
         })
         
   }
@@ -52,7 +62,8 @@ componentWillReceiveProps(NextProps){
           amountTransferred:transaction.amountTransferred,
           execTime:transaction.execTime,
           transferred:transaction.transferred,
-          transcationId:transaction.transcationId
+          transcationId:transaction.transcationId,
+          dst_address: transaction.dst_address
         })
   }
 }
@@ -65,10 +76,10 @@ onChange = (e) => {
     render() {
       const transaction = this.props.transaction.transaction ? this.props.transaction.transaction : {}
       const {errors} = this.state
-      const options =[
-      { label: 'Pending', value: 'Pending' },
-      { label: 'Completed', value: 'Completed' },
-    ]
+    //   const options =[
+    //   { label: 'Pending', value: 'Pending' },
+    //   { label: 'Completed', value: 'Completed' },
+    // ]
     return (
       <div className="updateTrans">
         <div className="container">
@@ -76,21 +87,21 @@ onChange = (e) => {
             <div className="col-md-8 m-auto">
               <Link to="/admin" className="btn btn-light"> Go Back</Link>
               <h1 className="display-4 text-center">Complete Transcation</h1>
-              <p>User: 17</p>
-            <p>Adddress: {transaction.dst_address}</p>
+              
+            <p>Address: {transaction.dst_address}</p>
             <p>Status: {transaction.status}</p>
             <p>Request Time	: {transaction.requestTime}</p>
             <p>GC Amount {transaction.amountRequested}</p>
             <small className="d-block pb-3">* = required field</small>
             
             <form action="">
-              <SelectListGroup
+              {/* <SelectListGroup
                 options={options}
                 value = {this.state.status}
                 name="status"          
                 onChange = {this.onChange}
                 info = "New Status"
-              />
+              /> */}
 
         
               <TextFieldGroup
@@ -102,14 +113,7 @@ onChange = (e) => {
                 onChange = {this.onChange}
               />
 
-              <TextFieldGroup
-                name="transcationId"
-                placeholder="transcation Id"
-                value = {this.state.transcationId}
-                error= {errors.transcationId}
-                info = "Magna chain transaction ID"
-                onChange = {this.onChange}
-              />
+              
               <input type="submit" className="btn btn-primary" value="Submit" onClick={this.onSubmit}/> 
             </form>
             

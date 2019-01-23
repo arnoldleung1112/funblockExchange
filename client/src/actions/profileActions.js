@@ -1,4 +1,4 @@
-import {GET_PROFILE} from './types'
+import {GET_PROFILE,GET_ERRORS} from './types'
 import Axios from 'axios';
 
 export const getProfile = () => dispatch => {
@@ -24,4 +24,12 @@ export const setProfile = (default_add) => dispatch => {
             }
         )
     })
+    .catch(err =>{
+        console.log(err);
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          })
+    }
+    )
 }

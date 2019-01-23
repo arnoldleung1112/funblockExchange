@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import Proptypes from 'prop-types'
 import {getAllTransactions} from  '../../actions/transActions'
 import {Link} from 'react-router-dom'
+import config from '../../config/config'
+import Moment from 'react-moment';
+
 class Admin extends Component {
 
   componentDidMount(){
@@ -10,23 +13,34 @@ class Admin extends Component {
   }
   render() {
     const {transactions} = this.props.transaction
-    
+    const {user} = this.props.auth
     var tableRow = null;
+
+    if (user.uid != "57"){
+      return(
+        <div className="strong">
+          Sorry you do not have the permission to this page
+        </div>
+      )
+    }
 
     if (transactions){
       tableRow = transactions.map(
         transaction => (
           <tr key={transaction._id}>
           <td>{transaction.user_uid}</td>
-          <td>{transaction.dst_address}</td>
+          <a target="_blank"  href={`${config.etherExplorer  + '/address/' +transaction.dst_address}`}>{transaction.dst_address}</a>
            <td> {transaction.status}</td>
-           <td> {transaction.requestTime}</td>
-           <td> {transaction.execTime} </td>
+           <td> <Moment format="YYYY/MM/DD HH:mm">{transaction.requestTime}</Moment></td>
+           <td> <Moment format="YYYY/MM/DD HH:mm">{transaction.execTime}</Moment> </td>
            <td>{transaction.amountRequested}</td>
            <td>{transaction.amountTransferred}</td>
-           <td>{transaction.transactionId}</td>
+           
             <td>
-              <Link to={`/updateTrans/${transaction._id}`} className="btn btn-primary">update</Link>             
+              {transaction.status == "Pending" ? 
+              (<Link to={`/updateTrans/${transaction._id}`} className="btn btn-primary">update</Link>):
+              (<a href={`${config.etherExplorer + '/tx/'+transaction.transactionId}`} className="btn btn-primary">Transaction details</a>)}
+                      
            </td>
         </tr>
         )
@@ -44,25 +58,28 @@ class Admin extends Component {
               <h1>Admin Panel</h1>
               <p className="lead text-muted"> Welcome Admin</p>
             </div>
-          {/* table */}
-          <table className="table">
-            <thead>
-            <tr>
-                  <th>User</th>
-                  <th>Address</th>
-                  <th>Status</th>
-                  <th>Request Time</th>
-                  <th>Executed Time</th>
-                  <th>GC Amount Requested</th>
-                  <th>Block Transferred </th>
-                  <th>Transcation Id</th>
-                  <th>Action </th>
-            </tr>
-            </thead>
-            <tbody>
-              {tableRow}
-            </tbody>
-          </table>
+          <div className="table-wrapper">
+            {/* table */}
+              <table className="table">
+                <thead>
+                <tr>
+                      <th>User</th>
+                      <th>To Address</th>
+                      <th>Status</th>
+                      <th>Request Time</th>
+                      <th>Executed Time</th>
+                      <th>GC Amount Requested</th>
+                      <th>BLUX Transferred </th>
+                      
+                      <th>Action </th>
+                </tr>
+                </thead>
+                <tbody>
+                  {tableRow}
+                </tbody>
+              </table>
+          </div>
+          
           </div>
         </div>
       </div>
@@ -76,7 +93,8 @@ Admin.propTypes={
 }
 
 const mapStatetoProps = state => ({
-  transaction: state.transaction
+  transaction: state.transaction,
+  auth: state.auth
 })
 
 export default connect(mapStatetoProps,{getAllTransactions})(Admin)

@@ -12,7 +12,8 @@ constructor(){
     super()
     this.state={
         displayUpdate: false,
-        default_address: ""
+        default_address: "",
+        errors:{}
     }
 }
 
@@ -43,12 +44,15 @@ onChange = (e) => {
   render() {
     let errors = {};
     let updatecontent;
+    
+    errors = this.props.errors;
+
     if(this.state.displayUpdate){
         updatecontent = (
             
             <card>
                 <card-content>
-                    <form className="col-md-8" action="">
+                    <form className="col-md-12" action="">
                             <label htmlFor="defaultAcount"> New Default Block Account: </label> 
                             <TextFieldGroup 
                             placeholder={this.props.profile.profile && this.props.profile.profile.default_address}
@@ -84,7 +88,11 @@ onChange = (e) => {
             </div>
             <div className="row"> 
                 <div className="col-md-12">
-                    <p>Default Block Account: {this.props.profile.profile && this.props.profile.profile.default_address} <span className="btn btn-primary"onClick={this.displayUpdate}> {this.state.displayUpdate ? "Hide": "Update" } </span></p>
+                    <p>Default Block Account: {this.props.profile.profile && this.props.profile.profile.default_address} 
+                        <span className="btn btn-primary"onClick={this.displayUpdate}> 
+                            {this.state.displayUpdate ? "Hide": "Update" } 
+                        </span>
+                    </p>
                     
                 </div>        
             
@@ -113,7 +121,8 @@ Dashboard.propTypes = {
 const mapStatetoProps = state => ({
     auth:state.auth,
     transaction: state.transaction,
-    profile: state.profile
+    profile: state.profile,
+    errors: state.errors
 })
 
 export default connect(mapStatetoProps, {getTransactions, getProfile, setProfile})(Dashboard);

@@ -15,6 +15,7 @@ constructor(props){
         dst_address:"",
         amountRequested:"",
         exchangeRate:0,
+        balance:0,
         errors:{}
     }
 }
@@ -23,6 +24,8 @@ componentDidMount = () => {
     axios.get('/api/utils/exchangeRate')
     .then(res => this.setState({exchangeRate: res.data.Rate}));
     this.props.getProfile();
+
+
 }
 
 componentWillReceiveProps = (nextProps) => {
@@ -31,7 +34,7 @@ componentWillReceiveProps = (nextProps) => {
     }
 
     if (nextProps.profile.profile) {
-        this.setState({ dst_address: nextProps.profile.profile.default_address });
+        this.setState({ dst_address: nextProps.profile.profile.default_address, balance: nextProps.profile.profile.balance });
       }
   }
 
@@ -54,7 +57,7 @@ onSubmit= (e) =>  {
   }
       
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <div className="request"> 
@@ -66,7 +69,7 @@ onSubmit= (e) =>  {
                 </Link>
                 <h1 className="display-4 text-center">Submit block exchange request</h1>
                 <p className="lead text-center">
-                    Your current balance: 100500
+                    Your current balance: {this.state.balance}
                 </p>
                 <small className="d-block pb-3">* = required field</small>
                 <form onSubmit={this.onSubmit}>
