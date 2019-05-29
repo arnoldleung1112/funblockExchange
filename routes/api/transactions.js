@@ -114,6 +114,8 @@ router.patch('/:trans_Id',passport.authenticate('jwt',{session:false}),
                 .then((gameCoinRes)=>{
                     res.status(200).json(tran)
                 })
+                .catch(err => console.log(err));
+                
             }else{
                 res.status(200).json({error: "transaction has been executed"})
             }

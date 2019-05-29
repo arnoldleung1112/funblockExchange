@@ -18,8 +18,10 @@ module.exports = (data) => {
     
 
     return new Promise((resolve, reject) => {
-        axios.post('http://app.gj.df.the9.com:18501/token', queryString.stringify(data))
-        .then( res => resolve(res.data))
+        axios.post('http://ugc.playfunblock.com:12350/token', queryString.stringify(data))
+        .then( res => {
+            console.log(res.data);
+            resolve(res.data)})
         .catch(err => {return err})
     })
 
