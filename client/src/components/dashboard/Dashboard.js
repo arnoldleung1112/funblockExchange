@@ -41,9 +41,17 @@ onChange = (e) => {
         [e.target.name]:e.target.value
     })
 }
+
+
   render() {
     let errors = {};
     let updatecontent;
+    let explorerLink;
+
+    if (this.props.profile.profile && this.props.profile.profile.deposit_address)
+    {
+        explorerLink = "https://explorer.ont.io/address/" + this.props.profile.profile.deposit_address + "/ALL/20/1/testnet"
+    }
     
     errors = this.props.errors;
 
@@ -53,7 +61,7 @@ onChange = (e) => {
             <card>
                 <card-content>
                     <form className="col-md-12" action="">
-                            <label htmlFor="defaultAcount"> New Default Block Account: </label> 
+                            <label htmlFor="defaultAcount"> New Default BLUX withdrawal Account: </label> 
                             <TextFieldGroup 
                             placeholder={this.props.profile.profile && this.props.profile.profile.default_address}
                             name="default_address"
@@ -82,26 +90,47 @@ onChange = (e) => {
             <div className="row">  
                                        
                     <div className="col-md-12 mb-4">
-                        <p>GC Account Balance: {this.props.profile.profile && this.props.profile.profile.balance}</p>
+                        <h4>Game Coin Account Balance: </h4>
+                        <h2 className="strong">
+                        {this.props.profile.profile && this.props.profile.profile.balance}
+                        </h2>
                     </div>
                     
             </div>
+
             <div className="row"> 
-                <div className="col-md-12">
-                    <p>Default Block Account: {this.props.profile.profile && this.props.profile.profile.default_address} 
-                        <span className="btn btn-primary"onClick={this.displayUpdate}> 
-                            {this.state.displayUpdate ? "Hide": "Update" } 
-                        </span>
-                    </p>
-                    
-                </div>        
+                <div className="col-md-12 card">
+                    <h5>BLUX (Ontology) Account: </h5>
+                    <div className="small">
+                    <a target="_blank" href={explorerLink}>view in explorer</a>
+                    </div>
+                    <p> 
+                        {this.props.profile.profile && this.props.profile.profile.deposit_address} 
+                    </p>    
+                    <h4> BLUX Balance:</h4>
+                    <h2> {this.props.profile.profile && this.props.profile.profile.bluxBalance} </h2>   
+                 </div>           
+            </div>
+
+            <div className="row"> 
+                <div className="col-md-12 card">
+                    <h4>Default PAX withdrawal Account:</h4>
+                    <p> {this.props.profile.profile && this.props.profile.profile.default_address} </p>
+                    <a className=""onClick={this.displayUpdate}> 
+                        <u>
+                        {this.state.displayUpdate ? "Hide": "Update" } 
+                        </u>      
+                    </a>
+
+                       {updatecontent && updatecontent}                    
+                 </div>           
+            </div>
+
             
-            {updatecontent && updatecontent}
-                            
-            </div>
-            <div className="row"> 
-                <TransTable trans={this.props.transaction.transactions}/>
-            </div>
+
+      
+            <TransTable trans={this.props.transaction.transactions}/>
+      
         </div>
     </div>
 

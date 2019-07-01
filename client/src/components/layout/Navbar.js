@@ -25,20 +25,17 @@ class Navbar extends Component {
           </li>
         ):
         (
+          <>
           <li className="nav-item">
-            <a className="nav-link" href="http://funblock.io">
-              About us
-            </a>
+            <Link className="nav-link" to="/dashboard">
+              Dashboard
+            </Link>
           </li>
+          </>
         )
         }
         
-        
-        <li className="nav-item">
-          <Link className="nav-link" to="/dashboard">
-            Dashboard
-          </Link>
-        </li>
+
         
         <li className="nav-item">
           <a

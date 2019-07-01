@@ -2,16 +2,19 @@ import {GET_PROFILE,GET_ERRORS} from './types'
 import Axios from 'axios';
 
 export const getProfile = () => dispatch => {
-    Axios.get('/api/profiles')
-    .then(res => {
-        
-        dispatch(
-            {
-                type:GET_PROFILE,
-                payload: res.data
-            }
-        )
-    })
+    Axios.post('/api/profiles/depositAddress')
+    .then( () =>
+        Axios.get('/api/profiles')
+        .then(res => {
+            
+            dispatch(
+                {
+                    type:GET_PROFILE,
+                    payload: res.data
+                }
+            )
+        })
+    )
 }
 
 export const setProfile = (default_add) => dispatch => {

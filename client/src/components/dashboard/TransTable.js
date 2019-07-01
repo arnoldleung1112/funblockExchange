@@ -5,8 +5,8 @@ import Moment from 'react-moment';
 import { deleteTransaction } from '../../actions/transActions';
 import {withRouter} from 'react-router-dom'
 import config from '../../config/config'
-
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
 
 class TransTable extends Component {
 
@@ -21,64 +21,102 @@ class TransTable extends Component {
   onNewRequestClick = ()=>{
     this.props.history.push('/request')
   }
+  onNewPaxRequestClick = ()=>{
+    this.props.history.push('/requestpax')
+  }
   render() {
-    console.log(config)
-
     const { trans } = this.props;
 
     console.log(trans)
     
-    const tableContent = trans && trans.map(
+    const tableContent = trans && trans.filter(trans => trans.transType == "GcToBlux").map(
       data => (
         <tr key={data._id}>
             <td>{data.amountRequested}</td>
             <td> {data.status}</td>
-            <td>
-              <a target="_blank" href={`${config.etherExplorer  + '/address/' +data.dst_address}`}>{data.dst_address}</a>
-            </td>
-            <td>{data.amountTransferred}</td>
             <td> <Moment format="YYYY/MM/DD HH:mm">{data.requestTime}</Moment></td>
-            <td><Moment format="YYYY/MM/DD HH:mm">{data.execTime}</Moment></td>
             <td>
-              {data.status === "Pending" ? 
-              (<button onClick={ ()=>{this.onDeleteClick(data._id)}}className="btn btn-danger">
-                Cancel Request
-              </button>)
-              :
-              (<a href={`${config.etherExplorer  + '/tx/' +data.transactionId}`} 
-                className="btn btn-primary">Transaction details
-              </a>)
-              
-              }
+              <a href="">details</a>
             </td>
         </tr>
       )
     )
 
+    const paxTableContent = trans && trans.filter(trans => trans.transType == "BluxToPax").map(
+      data => (
+           <tr key={data._id}>
+            <td>{data.amountRequested}</td>
+            <td> {data.status}</td> 
+  
+            <td> <Moment format="YYYY/MM/DD HH:mm">{data.requestTime}</Moment></td>
+    
+            <td>
+              
+              <a href="">details</a>
+            </td>
+          </tr>)
+    )
+  
+
     return (
       <div>
-          <h4 className=" col-md-12 m-2">Game Coin Transactions Request  <button className="btn btn-primary" onClick={this.onNewRequestClick}> New Request </button> </h4>
-          <div className="table-wrapper">
-            <table className="table">
+        <div className="row m-2"> 
+          <h4 className="col-md-12 text-center">Exchange Transactions Request </h4>
+        </div>
+
+        <div className="row text-center"> 
+          <div  className="col-6">
+            <button className="btn btn-primary " onClick={this.onNewRequestClick}> New BLUX Request </button> 
+          </div>
+          <div  className="col-6">   
+            <button className="btn btn-secondary" onClick={this.onNewPaxRequestClick}> New PAX Request  </button> 
+          </div>
+        </div>
+
+        <div className="row m-2"> 
+          <h4 className="col-md-12 text-center m-2">Transactions History </h4>
+        </div>
+
+        <div className="row text-center">
+            <Tabs>
+            <TabList>
+              <Tab>GC to BLUX</Tab>
+              <Tab>TBLUX to PAX</Tab>
+            </TabList>
+            <TabPanel>
+              <table className="table small">
                     <thead>
                         <tr>
-                        <th>Amount requested</th>
+                        <th>Amount</th>
                         <th>Status</th>
-                        <th> To address</th>
-                        <th>BLUX transferred</th>
                         <th>Request Time</th>
-                        <th>Executed Time</th>
-                        <th>Action</th>
-
+                        {/* <th>Executed Time</th> */}
+                        <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {tableContent}
-                        
                     </tbody>
               </table>
-          </div>
-                    
+            </TabPanel>
+            <TabPanel>
+              <table className="table small">
+                    <thead>
+                        <tr>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Request Time</th>
+                        {/* <th>Executed Time</th> */}
+                        <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {paxTableContent}
+                    </tbody>
+              </table>
+            </TabPanel>
+          </Tabs>
+        </div>
     </div>
     )
   }

@@ -8,7 +8,7 @@ import { submitRequest } from '../../actions/transActions';
 import {getProfile} from '../../actions/profileActions'
 import axios from 'axios';
 
- class Request extends Component {
+ class RequestPAX extends Component {
 constructor(props){
     super(props);
     this.state={
@@ -34,7 +34,7 @@ componentWillReceiveProps = (nextProps) => {
     }
 
     if (nextProps.profile.profile) {
-        this.setState({ dst_address: nextProps.profile.profile.deposit_address, balance: nextProps.profile.profile.balance });
+        this.setState({ dst_address: nextProps.profile.profile.default_address, bluxBalance: nextProps.profile.profile.bluxBalance });
       }
   }
 
@@ -48,8 +48,7 @@ onSubmit= (e) =>  {
     const transData = {
         user_uid: this.props.auth.user.uid,
         dst_address: this.state.dst_address,
-        amountRequested: this.state.amountRequested,
-        transType: "GcToBlux"
+        amountRequested: this.state.amountRequested
     };
 
     console.log(transData);
@@ -65,7 +64,6 @@ onSubmit= (e) =>  {
     {
         explorerLink = "https://explorer.ont.io/address/" + this.props.profile.profile.deposit_address + "/ALL/20/1/testnet"
     }
-
     return (
       <div className="request"> 
         <div className="container">
@@ -74,14 +72,21 @@ onSubmit= (e) =>  {
                 <Link to="/dashboard" className="btn btn-light">
                     Go Back
                 </Link>
-                <h1 className="display-4 text-center">Submit BLUX exchange request</h1>
+
+
+                <h1 className="display-4 text-center">Submit PAX exchange request</h1>
                 <p className="lead text-center">
-                    Your current GC balance: {this.state.balance}
+                  <p className="lead text-center">
+                      Your current BLUX balance: {this.state.bluxBalance}
+                  </p>
+                  <div className="small">
+                    <a target="_blank" href={explorerLink}>view in explorer</a>
+                    </div>
                 </p>
                 <small className="d-block pb-3">* = required field</small>
                 <form onSubmit={this.onSubmit}>
-                    <h5>Number of GC to be exchanged</h5>
-                    <small>Reference exchange Rate 1 GC to {this.state.exchangeRate} blocks, approximately {this.state.exchangeRate * this.state.amountRequested} blocks will be received</small>
+                    <h5>Number of BLUX to be exchanged to PAX</h5>
+                    <small>Reference exchange Rate 1 BLUX to {this.state.exchangeRate} PAX, approximately {this.state.exchangeRate * this.state.amountRequested} blocks will be received</small>
                     <TextFieldGroup
                     placeholder="* amount Requested"
                     name="amountRequested"
@@ -90,12 +95,14 @@ onSubmit= (e) =>  {
                     error={errors.amountRequested}
                     />
 
-                    <h5>destination BLUX account (receiving the BLUX)</h5>
-                    <div className="small">
-                    <a target="_blank" href={explorerLink}>view in explorer</a>
-                    </div>
-                    <p>{this.state.dst_address}</p>
-                    
+                    <h5>PAX withdrawl address  (address receiving PAX)</h5>
+                    <TextFieldGroup
+                    placeholder="destination blocks account (receiving the blocks)"
+                    name="dst_address"
+                    value={this.state.dst_address}
+                    onChange={this.onChange}
+                    error={errors.dst_address}
+                    />
 
                     <input
                     type="submit"
@@ -125,6 +132,6 @@ Request.propTypes = {
   });
   
   export default connect(mapStateToProps, { submitRequest, getProfile })(
-    withRouter(Request)
+    withRouter(RequestPAX)
   );
   

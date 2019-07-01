@@ -9,6 +9,12 @@ const ProfileSchema = new mongoose.Schema(
         default_address: {
             type: String,
         },
+        deposit_address: {
+            type: String,
+        },
+        deposit_address_pw: {
+            type: String,
+        },
         username: {
             type: String,
             required: true

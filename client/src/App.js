@@ -16,6 +16,7 @@ import Footer from './components/layout/Footer'
 import Login from './components/auth/Login'
 import Dashboard from './components/dashboard/Dashboard'
 import Request from './components/submitRequest/Request'
+import RequestPAX from './components/submitRequest/RequestPAX'
 import Landing from './components/layout/Landing';
 import Admin from './components/admin/Admin'
 import UpdateTrans from './components/admin/UpdateTrans'
@@ -74,6 +75,13 @@ class App extends Component {
                     exact
                     path="/request"
                     component={Request}
+                  />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/requestpax"
+                    component={RequestPAX}
                   />
               </Switch>
               <Switch>

@@ -20,7 +20,8 @@ router.post('/',passport.authenticate('jwt',{session:false}),
     const transData = {
         user_uid: req.user.uid,
         dst_address: req.body.dst_address,
-        amountRequested: req.body.amountRequested
+        amountRequested: req.body.amountRequested,
+        transType: req.body.transType
     }
     
     validateExchangeRequest(transData)
@@ -35,6 +36,21 @@ router.post('/',passport.authenticate('jwt',{session:false}),
     
 })
 
+//@des      get transcations of current user with type
+//@access   private
+//@url      api/transactions/
+
+router.get('/current/:type',passport.authenticate('jwt',{session:false}),
+    (req,res)=>{
+        Transaction.find({
+                            user_uid:req.user.uid,
+                            transType: req.params.type
+                        })
+        .then(trans=>res.status(200).json(trans))
+    }
+)
+
+
 //@des      get transcations of current user
 //@access   private
 //@url      api/transactions/
@@ -45,6 +61,8 @@ router.get('/current',passport.authenticate('jwt',{session:false}),
         .then(trans=>res.status(200).json(trans))
     }
 )
+
+
 
 //@des      delete a transcations of current user
 //@access   private

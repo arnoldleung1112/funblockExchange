@@ -6,6 +6,10 @@ const TransSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        transType:{
+            type: String,
+            required: true
+        },
         dst_address: {
             type: String,
             required: true
@@ -35,7 +39,10 @@ const TransSchema = new mongoose.Schema(
         transferred:{
             type:Number
         },
-        transactionId:{
+        bluxTransactionId:{
+            type:String
+        },
+        paxTransactionId:{
             type:String
         }
         

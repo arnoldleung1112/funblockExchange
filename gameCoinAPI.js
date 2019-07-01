@@ -20,7 +20,6 @@ module.exports = (data) => {
     return new Promise((resolve, reject) => {
         axios.post('http://ugc.playfunblock.com:12350/token', queryString.stringify(data))
         .then( res => {
-            console.log(res.data);
             resolve(res.data)})
         .catch(err => {return err})
     })

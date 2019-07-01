@@ -19,8 +19,19 @@ module.exports = function(data){
         
         if (Validator.isEmpty(data.dst_address)){
             errors.dst_address = 'destination address is empty'
-        }else if(!web3.utils.isAddress(data.dst_address)) {
-            errors.dst_address = 'destination address is not a valid ethereum address'
+        }
+        // else if(!web3.utils.isAddress(data.dst_address)) {
+        //     errors.dst_address = 'destination address is not a valid ethereum address'
+        // }
+        if (Validator.isEmpty(data.transType)){
+            errors.dst_address = 'destination address is empty'
+        }
+        else
+        {
+            if (data.transType != "GcToBlux" && data.transType != "BluxToPax")
+            {
+                errors.transType = 'invalid transaction type'
+            }
         }
 
         const gameCoinData = {

@@ -19,9 +19,10 @@ module.exports = function(data){
 
     if (Validator.isEmpty(data.default_address)){
         errors.default_address = 'default address is empty'
-    }else if(!web3.utils.isAddress(data.default_address)) {
-        errors.default_address = 'default address is not a valid ethereum address'
     }
+    // else if(!web3.utils.isAddress(data.default_address)) {
+    //     errors.default_address = 'default address is not a valid ethereum address'
+    // }
 
     return {
         errors:errors,
