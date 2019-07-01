@@ -75,14 +75,14 @@ onSubmit= (e) =>  {
 
 
                 <h1 className="display-4 text-center">Submit PAX exchange request</h1>
-                <p className="lead text-center">
-                  <p className="lead text-center">
+                <div className="lead text-center">
+                  <div className="lead text-center">
                       Your current BLUX balance: {this.state.bluxBalance}
-                  </p>
+                  </div>
                   <div className="small">
                     <a target="_blank" href={explorerLink}>view in explorer</a>
                     </div>
-                </p>
+                </div>
                 <small className="d-block pb-3">* = required field</small>
                 <form onSubmit={this.onSubmit}>
                     <h5>Number of BLUX to be exchanged to PAX</h5>
