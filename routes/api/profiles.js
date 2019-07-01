@@ -28,7 +28,14 @@ router.get('/',passport.authenticate('jwt',{session: false}),(req,res)=>{
         
             axios.get("https://polarisexplorer.ont.io/api/v1/explorer/address/balance/" + ProfileWithBalance.deposit_address)
             .then( result => {
-                console.log(result.data.Result.filter(result => result.AssetName == "BLX")[0].Balance)
+                if (result.data.Result.filter(result => result.AssetName == "BLX")[0])
+                {
+                    ProfileWithBalance.bluxBalance = result.data.Result.filter(result => result.AssetName == "BLX")[0].Balance
+                }
+                else
+                {
+                    ProfileWithBalance.bluxBalance = 0
+                }
                 res.status(200).json(
                     {
                         _id: ProfileWithBalance._id,
@@ -37,7 +44,7 @@ router.get('/',passport.authenticate('jwt',{session: false}),(req,res)=>{
                         default_address: ProfileWithBalance.default_address,
                         deposit_address: ProfileWithBalance.deposit_address,
                         balance: ProfileWithBalance.balance,
-                        bluxBalance: result.data.Result.filter(result => result.AssetName == "BLX")[0].Balance
+                        bluxBalance: ProfileWithBalance.bluxBalance
                     }
                 )
             })
