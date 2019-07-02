@@ -41,3 +41,24 @@ table {
   text-decoration: underline;
   font-weight: bold;
 }
+
+.bluxOrange
+{
+  background: #EF6730;
+  color:white;
+  border: 0;
+}
+
+.paxBlue
+{
+  background: #69D2E7;
+  color:white;
+  border: 0;
+}
+
+.gcGreen 
+{
+  background:  #E0E4CC;
+  border: 0;
+
+}

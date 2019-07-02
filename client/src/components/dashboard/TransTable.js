@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { deleteTransaction } from '../../actions/transActions';
-import {withRouter} from 'react-router-dom'
+import {Link,withRouter} from 'react-router-dom'
 import config from '../../config/config'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
+
 
 class TransTable extends Component {
 
@@ -36,7 +37,7 @@ class TransTable extends Component {
             <td> {data.status}</td>
             <td> <Moment format="YYYY/MM/DD HH:mm">{data.requestTime}</Moment></td>
             <td>
-              <a href="">details</a>
+              <Link to={`/transactionDetail/${data._id}`}>details</Link>
             </td>
         </tr>
       )
@@ -51,8 +52,7 @@ class TransTable extends Component {
             <td> <Moment format="YYYY/MM/DD HH:mm">{data.requestTime}</Moment></td>
     
             <td>
-              
-              <a href="">details</a>
+              <Link to={`/transactionDetail/${data._id}`}>details</Link>
             </td>
           </tr>)
     )
@@ -66,10 +66,10 @@ class TransTable extends Component {
 
         <div className="row text-center"> 
           <div  className="col-6">
-            <button className="btn btn-primary " onClick={this.onNewRequestClick}> New BLUX Request </button> 
+            <button className="btn btn-primary bluxOrange " onClick={this.onNewRequestClick}> New BLUX Request </button> 
           </div>
           <div  className="col-6">   
-            <button className="btn btn-secondary" onClick={this.onNewPaxRequestClick}> New PAX Request  </button> 
+            <button className="btn btn-secondary paxBlue" onClick={this.onNewPaxRequestClick}> New PAX Request  </button> 
           </div>
         </div>
 
@@ -81,7 +81,7 @@ class TransTable extends Component {
             <Tabs>
             <TabList>
               <Tab>GC to BLUX</Tab>
-              <Tab>TBLUX to PAX</Tab>
+              <Tab>BLUX to PAX</Tab>
             </TabList>
             <TabPanel>
               <table className="table small">

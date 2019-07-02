@@ -48,7 +48,8 @@ onSubmit= (e) =>  {
     const transData = {
         user_uid: this.props.auth.user.uid,
         dst_address: this.state.dst_address,
-        amountRequested: this.state.amountRequested
+        amountRequested: this.state.amountRequested,
+        transType: "BluxToPax"
     };
 
     console.log(transData);
@@ -74,7 +75,7 @@ onSubmit= (e) =>  {
                 </Link>
 
 
-                <h1 className="display-4 text-center">Submit PAX exchange request</h1>
+                <h1 className="display-4 text-center"> BLUX to PAX</h1>
                 <div className="lead text-center">
                   <div className="lead text-center">
                       Your current BLUX balance: {this.state.bluxBalance}
@@ -86,7 +87,7 @@ onSubmit= (e) =>  {
                 <small className="d-block pb-3">* = required field</small>
                 <form onSubmit={this.onSubmit}>
                     <h5>Number of BLUX to be exchanged to PAX</h5>
-                    <small>Reference exchange Rate 1 BLUX to {this.state.exchangeRate} PAX, approximately {this.state.exchangeRate * this.state.amountRequested} blocks will be received</small>
+                    <small>Reference exchange Rate 1 BLUX to {this.state.exchangeRate} PAX, approximately {this.state.exchangeRate * this.state.amountRequested} PAX will be received</small>
                     <TextFieldGroup
                     placeholder="* amount Requested"
                     name="amountRequested"

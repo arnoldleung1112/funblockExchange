@@ -20,6 +20,7 @@ import RequestPAX from './components/submitRequest/RequestPAX'
 import Landing from './components/layout/Landing';
 import Admin from './components/admin/Admin'
 import UpdateTrans from './components/admin/UpdateTrans'
+import transactionDetail from './components/transaction/transactionDetail'
 
 //for setting uses state login
 import jwt_decode from 'jwt-decode';
@@ -96,6 +97,13 @@ class App extends Component {
                     exact
                     path="/UpdateTrans/:trans_Id"
                     component={UpdateTrans}
+                  />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                    exact
+                    path="/transactionDetail/:trans_Id"
+                    component={transactionDetail}
                   />
               </Switch>
             </div>

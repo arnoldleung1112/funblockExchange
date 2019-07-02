@@ -24,7 +24,7 @@ module.exports = function(data){
         //     errors.dst_address = 'destination address is not a valid ethereum address'
         // }
         if (Validator.isEmpty(data.transType)){
-            errors.dst_address = 'destination address is empty'
+            errors.dst_address = 'transaction type address is empty'
         }
         else
         {

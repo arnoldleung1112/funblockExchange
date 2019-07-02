@@ -88,19 +88,17 @@ onChange = (e) => {
             </div>
                 
             <div className="row">  
-                                       
-                    <div className="col-md-12 mb-4">
+                 <div className="col-md-12 card gcGreen">           
                         <h4>Game Coin Account Balance: </h4>
                         <h2 className="strong">
                         {this.props.profile.profile && this.props.profile.profile.balance}
                         </h2>
-                    </div>
-                    
+                </div>
             </div>
 
             <div className="row"> 
-                <div className="col-md-12 card">
-                    <h5>BLUX (Ontology) Account: </h5>
+                <div className="col-md-12 card bluxOrange">
+                    <h4>BLUX (Ontology) Account: </h4>
                     <div className="small">
                     <a target="_blank" href={explorerLink}>view in explorer</a>
                     </div>
@@ -113,7 +111,7 @@ onChange = (e) => {
             </div>
 
             <div className="row"> 
-                <div className="col-md-12 card">
+                <div className="col-md-12 card paxBlue">
                     <h4>Default PAX withdrawal Account:</h4>
                     <p> {this.props.profile.profile && this.props.profile.profile.default_address} </p>
                     <a className=""onClick={this.displayUpdate}> 

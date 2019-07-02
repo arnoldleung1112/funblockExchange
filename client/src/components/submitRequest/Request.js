@@ -74,14 +74,14 @@ onSubmit= (e) =>  {
                 <Link to="/dashboard" className="btn btn-light">
                     Go Back
                 </Link>
-                <h1 className="display-4 text-center">Submit BLUX exchange request</h1>
+                <h1 className="display-4 text-center">Game Coin to BLUX</h1>
                 <p className="lead text-center">
                     Your current GC balance: {this.state.balance}
                 </p>
                 <small className="d-block pb-3">* = required field</small>
                 <form onSubmit={this.onSubmit}>
                     <h5>Number of GC to be exchanged</h5>
-                    <small>Reference exchange Rate 1 GC to {this.state.exchangeRate} blocks, approximately {this.state.exchangeRate * this.state.amountRequested} blocks will be received</small>
+                    <small>Reference exchange Rate 1 GC to {this.state.exchangeRate} BLUX, approximately {this.state.exchangeRate * this.state.amountRequested} BLUX will be received</small>
                     <TextFieldGroup
                     placeholder="* amount Requested"
                     name="amountRequested"
