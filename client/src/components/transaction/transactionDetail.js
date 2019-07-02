@@ -83,7 +83,7 @@ onChange = (e) => {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto text-center">
-              <Link to="/dashboard" className="btn btn-light"> Go Back</Link>
+              
               <h3>Transcation Detail</h3>
             <div className="m-1">
                 <div className="small">
@@ -133,7 +133,7 @@ onChange = (e) => {
                     {transaction.amountTransferred}
                 </div>
             </div>
-
+            <Link to="/dashboard" className="btn btn-light"> Go Back</Link>
             
           
             </div>
