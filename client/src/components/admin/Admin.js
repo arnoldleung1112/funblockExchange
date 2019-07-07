@@ -5,6 +5,8 @@ import {getAllTransactions} from  '../../actions/transActions'
 import {Link} from 'react-router-dom'
 import config from '../../config/config'
 import Moment from 'react-moment';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import AdminTable from './AdminTable'
 
 class Admin extends Component {
 
@@ -14,7 +16,7 @@ class Admin extends Component {
   render() {
     const {transactions} = this.props.transaction
     const {user} = this.props.auth
-    var tableRow = null;
+
 
     if (user.uid != "57"){
       return(
@@ -23,30 +25,6 @@ class Admin extends Component {
         </div>
       )
     }
-
-    if (transactions){
-      tableRow = transactions.map(
-        transaction => (
-          <tr key={transaction._id}>
-          <td>{transaction.user_uid}</td>
-          <a target="_blank"  href={`${config.etherExplorer  + '/address/' +transaction.dst_address}`}>{transaction.dst_address}</a>
-           <td> {transaction.status}</td>
-           <td> <Moment format="YYYY/MM/DD HH:mm">{transaction.requestTime}</Moment></td>
-           <td> <Moment format="YYYY/MM/DD HH:mm">{transaction.execTime}</Moment> </td>
-           <td>{transaction.amountRequested}</td>
-           <td>{transaction.amountTransferred}</td>
-           
-            <td>
-              {transaction.status == "Pending" ? 
-              (<Link to={`/updateTrans/${transaction._id}`} className="btn btn-primary">update</Link>):
-              (<a href={`${config.etherExplorer + '/tx/'+transaction.transactionId}`} className="btn btn-primary">Transaction details</a>)}
-                      
-           </td>
-        </tr>
-        )
-      )
-    }
-    
     
 
     return (
@@ -58,28 +36,40 @@ class Admin extends Component {
               <h1>Admin Panel</h1>
               <p className="lead text-muted"> Welcome Admin</p>
             </div>
-          <div className="table-wrapper">
-            {/* table */}
-              <table className="table">
-                <thead>
-                <tr>
-                      <th>User</th>
-                      <th>To Address</th>
-                      <th>Status</th>
-                      <th>Request Time</th>
-                      <th>Executed Time</th>
-                      <th>GC Amount Requested</th>
-                      <th>BLUX Transferred </th>
-                      
-                      <th>Action </th>
-                </tr>
-                </thead>
-                <tbody>
-                  {tableRow}
-                </tbody>
-              </table>
           </div>
-          
+          <div className="row">  
+                 <div className="col-md-12 card gcGreen">           
+                        <h4>Pending (GC to BLUX): </h4>
+                        <h2 className="strong">
+                         {transactions && transactions.filter( tran => (tran.status == 'Pending' && tran.transType == 'GcToBlux')).length}
+                        </h2>
+                        <h4>Pending (BLUX to PAX): </h4>
+                        <h2 className="strong">
+                          {transactions && transactions.filter( tran => (tran.status == 'Pending' && tran.transType == 'BluxToPax')).length}
+                        </h2>
+                        <h4>Completed: </h4>
+                        <h2 className="strong">
+                          {transactions && transactions.filter( tran => (tran.status == 'Completed')).length}
+                        </h2>
+                </div>
+            </div>
+          <div className="row text-center">
+            <Tabs>
+              <TabList>
+                <Tab> Pending (GC to BLUX)</Tab>
+                <Tab> Pending (BLUX to PAX)</Tab>
+                <Tab> Completed</Tab>
+              </TabList>
+               <TabPanel>
+                 <AdminTable trans={transactions && transactions.filter( tran => (tran.status == 'Pending' && tran.transType == 'GcToBlux'))} />
+              </TabPanel>
+              <TabPanel>
+                <AdminTable trans={transactions && transactions.filter( tran => (tran.status == 'Pending' && tran.transType == 'BluxToPax'))} />
+              </TabPanel>
+              <TabPanel>
+                <AdminTable trans={transactions && transactions.filter( tran => (tran.status == 'Completed'))} />
+              </TabPanel>
+            </Tabs>       
           </div>
         </div>
       </div>

@@ -39,13 +39,9 @@ const TransSchema = new mongoose.Schema(
         transferred:{
             type:Number
         },
-        bluxTransactionId:{
-            type:String
-        },
-        paxTransactionId:{
+        transactionId:{
             type:String
         }
-        
     }
     
 )

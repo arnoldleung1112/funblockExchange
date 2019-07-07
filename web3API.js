@@ -43,7 +43,3 @@ module.exports = (dstAddress, transferAmount)=>{
     })
 }
 
-
-
-// main('0xb0d18d91f68f0ea059558b17e02240d1762b079e',1)
-// .then( tx => console.log(tx))

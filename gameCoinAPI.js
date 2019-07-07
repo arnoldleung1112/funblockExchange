@@ -1,6 +1,7 @@
 const axios = require('axios');
 const md5 = require('md5');
 const queryString = require("query-string");
+const config = require("./configs/keys")
 
 // const data = {
 //     type: "query",
@@ -10,7 +11,7 @@ module.exports = (data) => {
     // todo: secure key
     const dataEntries = Object.entries(data)
     var query = dataEntries.map( entry => entry.join("=")).join('');
-    query = query + '02aeb8316f736ac0a468160e047055c9'
+    query = query + config.gameCoinSecret
 
     const MD5query= md5(query)
 

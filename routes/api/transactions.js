@@ -3,7 +3,6 @@ const router = express.Router();
 const passport = require('passport');
 const Transaction = require('../../models/Transaction')
 const gameCoinAPI = require('../../gameCoinAPI')
-const web3API = require('../../web3API')
 const validateExchangeRequest = require('../../validations/validateExchangeRequest')
 //test route
 router.get('/',(req,res)=>{
@@ -96,12 +95,21 @@ router.get('/all',
 
 router.get('/:trans_Id',passport.authenticate('jwt',{session:false}),
 (req,res)=>{
-    if(req.user.uid != "57") return res.json({error: "no permission"});
 
-   Transaction.findById(req.params.trans_Id)
-    .then(tran => {
-        res.status(200).json(tran)
-    })
+        Transaction.findById(req.params.trans_Id)
+        .then(tran => {
+            if(req.user.uid != "57" && tran.user_uid != req.user.uid ) 
+            {
+                return res.json({error: "no permission"});
+            }
+            else
+            {
+                res.status(200).json(tran)
+            }
+
+            
+        })
+   
 })
 
 //@des      execute a transcation
@@ -110,38 +118,69 @@ router.get('/:trans_Id',passport.authenticate('jwt',{session:false}),
 
 router.patch('/:trans_Id',passport.authenticate('jwt',{session:false}),
 (req,res)=>{
-    
+    console.log("updating")
    if(req.user.uid != "57") return res.json({error: "no permission"});
-   //Todo update sequence rearranging for security reason
-   console.log('transferring to address: ' + req.body.dst_address);
-   web3API(req.body.dst_address, req.body.amountTransferred)
-   .then(txHash => {
-        req.body.transactionId = txHash;
 
-        Transaction.findByIdAndUpdate(req.params.trans_Id,
-            req.body,
-            {new:true})
-        .then(tran => {
-            if(tran.status == "Pending"){
-                const gameCoinData = {
-                    amount:tran.amountRequested,
-                    type:"consume",
-                    uid:tran.user_uid
+   Transaction.findByIdAndUpdate(req.params.trans_Id,
+                                req.body,
+                                {new:true})
+    .then(tran => {
+ 
+
+        const gameCoinData = {
+                amount:tran.amountRequested,
+                type:"consume",
+                uid:tran.user_uid
                 }
+           
+        console.log(tran)
+        if(tran.transType == "GcToBlux")
+            {
+                console.log("calling gameCoinAPI")
                 gameCoinAPI(gameCoinData)
-                .then((gameCoinRes)=>{
+                .then((gameCoinRes)=>
+                {
                     res.status(200).json(tran)
                 })
                 .catch(err => console.log(err));
-                
-            }else{
-                res.status(200).json({error: "transaction has been executed"})
             }
-
-        })
-
-        }
+        else
+            {
+                console.log("not calling gameCoinAPI")
+                res.status(200).json(tran)
+            }
+    }
     )
+
+   //Ethereum code
+//    web3API(req.body.dst_address, req.body.amountTransferred)
+//    .then(txHash => {
+//         req.body.transactionId = txHash;
+
+//         Transaction.findByIdAndUpdate(req.params.trans_Id,
+//             req.body,
+//             {new:true})
+//         .then(tran => {
+//             if(tran.status == "Pending"){
+//                 const gameCoinData = {
+//                     amount:tran.amountRequested,
+//                     type:"consume",
+//                     uid:tran.user_uid
+//                 }
+//                 gameCoinAPI(gameCoinData)
+//                 .then((gameCoinRes)=>{
+//                     res.status(200).json(tran)
+//                 })
+//                 .catch(err => console.log(err));
+                
+//             }else{
+//                 res.status(200).json({error: "transaction has been executed"})
+//             }
+
+//         })
+
+//         }
+//     )
 
     
 })

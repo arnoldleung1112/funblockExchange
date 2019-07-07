@@ -14,10 +14,11 @@ constructor(){
   super();
   this.state={
   status:"",
-  amountTransferred:null,
-  execTime:null,
-  transferred:null,
-  dst_address:null,
+  amountTransferred:"",
+  execTime:"",
+  transferred:0,
+  dst_address:"",
+  transactionId:"",
   errors:{}
   }
 
@@ -33,7 +34,8 @@ constructor(){
         status:"Completed",
         amountTransferred:this.state.amountTransferred,
         execTime:Date.now(),
-        dst_address: this.state.dst_address
+        dst_address: this.state.dst_address,
+        transactionId:this.state.transactionId
       }
       axios.patch(`/api/transactions/${this.props.match.params.trans_Id}`,data)
       .then( res => this.props.history.push('/admin'))
@@ -43,16 +45,19 @@ constructor(){
 
 componentDidMount() {
         this.props.getTransaction(this.props.match.params.trans_Id);
-        const transaction = this.props.transaction.transaction ? this.props.transaction.transaction : {}
-        this.setState({
-          status:"Completed",
-          amountTransferred:transaction.amountTransferred,
-          execTime:transaction.execTime,
-          transferred:transaction.transferred,
-          transcationId:transaction.transcationId,
-          dst_address: transaction.dst_address
-        })
+        const transaction = this.props.transaction.transaction 
         
+        if (transaction)
+        {
+          this.setState({
+            status:"Completed",
+            amountTransferred:transaction.amountTransferred,
+            execTime:transaction.execTime,
+            transferred:transaction.transferred,
+            transcationId:transaction.transcationId,
+            dst_address: transaction.dst_address
+          })
+        }
   }
 componentWillReceiveProps(NextProps){
   if(NextProps.transaction.transaction){
@@ -88,10 +93,12 @@ onChange = (e) => {
               <Link to="/admin" className="btn btn-light"> Go Back</Link>
               <h1 className="display-4 text-center">Complete Transcation</h1>
               
-            <p>Address: {transaction.dst_address}</p>
+            
             <p>Status: {transaction.status}</p>
+            <p>Type: {transaction.transType}</p>
+            <p>Address: {transaction.dst_address}</p>
             <p>Request Time	: {transaction.requestTime}</p>
-            <p>GC Amount {transaction.amountRequested}</p>
+            <p>Amount Requested: {transaction.amountRequested}</p>
             <small className="d-block pb-3">* = required field</small>
             
             <form action="">
@@ -110,6 +117,15 @@ onChange = (e) => {
                 value = {this.state.amountTransferred}
                 error= {errors.amountTransferred}
                 info = "Total Blocks transferred"
+                onChange = {this.onChange}
+              />
+
+              <TextFieldGroup
+                name="transactionId"
+                placeholder="transaction Id"
+                value = {this.state.transactionId}
+                error= {errors.transactionId}
+                info = "transaction Id"
                 onChange = {this.onChange}
               />
 

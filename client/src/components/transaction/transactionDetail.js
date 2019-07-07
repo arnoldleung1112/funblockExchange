@@ -133,6 +133,14 @@ onChange = (e) => {
                     {transaction.amountTransferred}
                 </div>
             </div>
+            <div className="m-1">
+                <div className="small">
+                    Transaction ID:
+                </div>
+                <div>
+                    {transaction.transactionId}
+                </div>
+            </div>
             <Link to="/dashboard" className="btn btn-light"> Go Back</Link>
             
           
